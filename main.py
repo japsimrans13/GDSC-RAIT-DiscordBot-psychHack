@@ -19,10 +19,14 @@ async def on_ready():
 
 #Gets response from the api that you choose
 def get_greetings():
-#   response = requests.get("http://127.0.0.1:3000/greetings")
-#   greetings = json.loads(response.text)
-    greetings  = 'This is demo greetings..'
-    return (greetings)
+    response = requests.get("https://gdsc-rait-discord-bot-api-psych-hack.vercel.app/greetings")
+    print(response.text)
+    message ="Hello Sir"
+    if response.status_code == 200:
+        # Checking if our api is working properly
+        res_json  = json.loads(response.text)
+        message = res_json['message']
+    return (message)
 
 
 @client.event
@@ -35,7 +39,6 @@ async def on_message(message):
     if any(word in msg for word in greetings):
         greeting_responses = get_greetings()
         await message.channel.send(greeting_responses)
-        # await message.channel.send(random.choice(greeting_responses)['message'])
 
 
 token = os.getenv('DISCORD_TOKEN')
